@@ -1,0 +1,67 @@
+#!/bin/bash
+
+hosts='/etc/hosts'
+block='hosts.block'
+
+function enable {
+    # Remove duplicates
+    awk '!a[$0]++' $block > "$block.tmp" && rm -f $block && mv "$block.tmp" $block
+
+    # Read list
+    block=$(cat "hosts.block")
+
+    # Add block lists to hosts file
+    echo -e "############## TRAIL START ##############\n$block\n############### TRAIL END ###############" >> $hosts
+    echo "Blocked tracking hosts"
+}
+
+function disable {
+    sed -i.bak '/############## TRAIL START ##############/,/############### TRAIL END ###############/d' $hosts
+    rm -f "$hosts.bak"
+    echo "Disabled blocking tracking hosts"
+}
+
+while test $# -gt 0; do
+        case "$1" in
+                -h|--help)
+                        echo " "
+                        echo "Trail usage:"
+                        echo " "
+                        echo "$0 enable"
+                        echo "$0 disable"
+                        echo " "
+                        echo "options:"
+                        echo "-h, --help                show brief help"
+                        exit 0
+                        ;;
+                -e|--enable)
+                        disable
+                        enable
+                        shift
+                        ;;
+                -d|--disable)
+                        disable
+                        shift
+                        ;;
+                -s|--sniff)
+
+                        if [ "$(id -u)" != "0" ]; then
+                           echo "This script must be run as root" 1>&2
+                           exit 1
+                        fi
+
+                        echo ""
+                        echo "Hit ^C to quit sniffing"
+                        echo "Start sniffing for tracking requests ..."
+                        echo ""
+
+                        tcpdump -A -s 0 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' 2>&1 | awk '/1920x1200/||/24-bit/{getline; print $2 > "hosts.sniff"}' &
+                        tail -f "hosts.sniff"
+                        shift
+                        ;;
+                *)
+                        echo "Use -h option to see some help"
+                        break
+                        ;;
+        esac
+done

@@ -1,0 +1,18 @@
+##
+# Host Database
+#
+# localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+127.0.0.1	localhost
+255.255.255.255	broadcasthost
+::1             localhost
+fe80::1%lo0	localhost
+
+# BuboBox
+192.168.33.10 bubobox.dev
+192.168.33.10 www.bubobox.dev
+192.168.33.10 bubobox2.dev
+192.168.33.10 www.bubobox2.dev
+192.168.33.10 www.bubobox.dev
+192.168.33.10 bubobox2.dev
