@@ -21,6 +21,13 @@ function disable {
     echo "Disabled blocking tracking hosts"
 }
 
+function must_be_admin {
+    if [ "$(id -u)" != "0" ]; then
+        echo "This script must be run as root" 1>&2
+        exit 1
+    fi
+}
+
 while test $# -gt 0; do
         case "$1" in
                 -h|--help)
@@ -35,20 +42,19 @@ while test $# -gt 0; do
                         exit 0
                         ;;
                 -e|--enable)
+                        must_be_admin
                         disable
                         enable
                         shift
                         ;;
                 -d|--disable)
+                        must_be_admin
                         disable
                         shift
                         ;;
                 -s|--sniff)
 
-                        if [ "$(id -u)" != "0" ]; then
-                           echo "This script must be run as root" 1>&2
-                           exit 1
-                        fi
+                        must_be_admin
 
                         echo ""
                         echo "Hit ^C to quit sniffing"
