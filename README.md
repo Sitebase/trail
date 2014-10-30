@@ -11,3 +11,7 @@ Sniffing
 If you want to find new hosts to block you can start a sniffer with `./trail --sniff` and start do some browsing on the web. The sniffer script will automatically try to detect hosts that seem to be tracking your behavior. All these hosts are logged to the `hosts.sniff` file. 
 
 Keep in mind that the sniffer doesn't work for https connections.
+
+Tested on
+---------
+For the moment this is only tested on Mac OSX Yosemite.
