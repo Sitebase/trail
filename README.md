@@ -12,6 +12,10 @@ If you want to find new hosts to block you can start a sniffer with `./trail --s
 
 Keep in mind that the sniffer doesn't work for https connections.
 
+Todo
+----
+* For the moment the regex used to detect a tracking pixel is very simple, this can be hugely improved
+
 Tested on
 ---------
 For the moment this is only tested on Mac OSX Yosemite.
